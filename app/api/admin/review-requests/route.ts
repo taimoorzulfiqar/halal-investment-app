@@ -10,31 +10,38 @@ async function isAdmin() {
   
   const user = await prisma.user.findUnique({
     where: { email: session.user.email! },
-    select: { role: true }
+    select: {
+      id: true,
+      role: true
+    }
   });
   
   return user?.role === 'ADMIN';
 }
 
 export async function GET() {
-  if (!await isAdmin()) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const requests = await prisma.reviewRequest.findMany({
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email! }
+  });
+
+  if (!user || user.role !== 'ADMIN') {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const reviewRequests = await prisma.reviewRequest.findMany({
     include: {
-      investment: {
-        select: {
-          id: true,
-          title: true,
-          description: true
-        }
-      },
+      investment: true,
       requester: {
         select: {
+          id: true,
+          email: true,
           firstName: true,
-          lastName: true,
-          email: true
+          lastName: true
         }
       }
     },
@@ -43,35 +50,30 @@ export async function GET() {
     }
   });
 
-  return NextResponse.json(requests);
+  return NextResponse.json(reviewRequests);
 }
 
-export async function PUT(request: Request) {
+export async function POST(request: Request) {
   if (!await isAdmin()) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const url = new URL(request.url);
-  const requestId = url.pathname.split('/').pop();
-  const data = await request.json();
+  try {
+    const data = await request.json();
+    const { investmentId, status, notes } = data;
 
-  const session = await getServerSession(authOptions);
-  const adminUser = await prisma.user.findUnique({
-    where: { email: session?.user?.email! }
-  });
+    const updatedReview = await prisma.reviewRequest.update({
+      where: { investmentId },
+      data: {
+        status,
+        notes,
+        reviewerId: (await getServerSession(authOptions))?.user?.id
+      }
+    });
 
-  const reviewRequest = await prisma.reviewRequest.update({
-    where: { id: requestId },
-    data: {
-      status: data.status,
-      comment: data.comment,
-      reviewerId: adminUser?.id
-    },
-    include: {
-      investment: true,
-      requester: true
-    }
-  });
-
-  return NextResponse.json(reviewRequest);
+    return NextResponse.json(updatedReview);
+  } catch (error) {
+    console.error('Error updating review request:', error);
+    return NextResponse.json({ error: 'Failed to update review request' }, { status: 500 });
+  }
 }

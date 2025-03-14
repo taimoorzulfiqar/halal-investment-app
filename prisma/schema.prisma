@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 datasource db {
   provider = "postgresql"
   url = env("POSTGRES_PRISMA_URL")
@@ -15,33 +12,22 @@ generator client {
   previewFeatures = ["driverAdapters"]
 }
 
-enum Role {
-  USER
-  ADMIN
-}
-
-enum ReviewStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
-
 model User {
-  id            String          @id @default(cuid())
-  email         String         @unique
-  password      String
-  firstName     String
-  lastName      String
-  role          Role           @default(USER)
+  id              String          @id @default(cuid())
+  email           String          @unique
+  password        String
+  firstName       String
+  lastName        String
+  role            String         @default("USER")
   twoFactorSecret String?
-  twoFactorEnabled Boolean      @default(false)
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  profile       Profile?
-  opportunities Investment[]
-  passwordReset PasswordReset[]
-  reviewRequests ReviewRequest[] @relation("Requester")
-  reviewsHandled ReviewRequest[] @relation("Reviewer")
+  twoFactorEnabled Boolean        @default(false)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  profile         Profile?
+  opportunities   Investment[]
+  passwordReset   PasswordReset[]
+  reviewRequests  ReviewRequest[] @relation("Requester")
+  reviewsHandled  ReviewRequest[] @relation("Reviewer")
 }
 
 model Profile {
@@ -57,22 +43,22 @@ model Profile {
 }
 
 model Investment {
-  id             String   @id @default(cuid())
+  id             String        @id @default(cuid())
   title          String
   description    String
   amount         String
   return         String
   businessType   String
   investmentType String
-  city          String
-  postedBy      User     @relation(fields: [userId], references: [id])
-  userId        String
-  contactEmail  String
-  contactNumber String?
-  image         String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  reviewRequest ReviewRequest?
+  city           String
+  postedBy       User          @relation(fields: [userId], references: [id])
+  userId         String
+  contactEmail   String
+  contactNumber  String?
+  image          String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  reviewRequest  ReviewRequest?
 }
 
 model PasswordReset {
@@ -85,15 +71,21 @@ model PasswordReset {
 }
 
 model ReviewRequest {
-  id          String       @id @default(cuid())
-  investment  Investment   @relation(fields: [investmentId], references: [id])
-  investmentId String      @unique
-  requester   User        @relation("Requester", fields: [requesterId], references: [id])
-  requesterId String
-  reviewer    User?       @relation("Reviewer", fields: [reviewerId], references: [id])
-  reviewerId  String?
-  status      ReviewStatus @default(PENDING)
-  comment     String?
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id           String       @id @default(cuid())
+  investment   Investment   @relation(fields: [investmentId], references: [id])
+  investmentId String       @unique
+  requester    User         @relation("Requester", fields: [requesterId], references: [id])
+  requesterId  String
+  reviewer     User?        @relation("Reviewer", fields: [reviewerId], references: [id])
+  reviewerId   String?
+  status       ReviewStatus @default(PENDING)
+  comment      String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
