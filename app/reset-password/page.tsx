@@ -1,7 +1,6 @@
 "use client"
 
 import { Suspense } from "react"
-import { useSearchParams } from "next/navigation"
 import ResetPasswordForm from "./reset-password-form"
 
 const metadata: { title: string; description: string } = {
@@ -10,16 +9,11 @@ const metadata: { title: string; description: string } = {
 }
 
 export default function ResetPasswordPage() {
-  const searchParams = useSearchParams()
-  const token = searchParams.get("token")
-
   return (
-    <Suspense fallback={
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+    <div className="flex min-h-screen flex-col items-center justify-between p-24">
+      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm">
+        <ResetPasswordForm />
       </div>
-    }>
-      <ResetPasswordForm token={token || undefined} />
-    </Suspense>
+    </div>
   )
 }
