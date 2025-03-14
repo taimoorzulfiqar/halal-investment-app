@@ -1,19 +1,13 @@
-"use client"
-
-import { Suspense } from "react"
-import ResetPasswordForm from "./reset-password-form"
-
-const metadata: { title: string; description: string } = {
-  title: "Reset Password",
-  description: "Reset your password",
-}
+// In your reset-password/page.js or page.tsx file
+import { Suspense } from 'react';
+import ResetPasswordForm from './reset-password-form'; // Your component that uses useSearchParams
 
 export default function ResetPasswordPage() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm">
+    <div className="reset-password-container">
+      <Suspense fallback={<div>Loading...</div>}>
         <ResetPasswordForm />
-      </div>
+      </Suspense>
     </div>
-  )
+  );
 }
