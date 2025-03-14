@@ -71,7 +71,7 @@ export default function PostAdPage() {
       <header className="sticky top-0 z-10 border-b bg-background">
         <div className="flex h-16 items-center px-4 md:px-6">
           <div className="flex items-center gap-2 font-semibold">
-            <span className="text-xl font-bold">InvestConnect</span>
+            <span className="text-xl font-bold">Halal Kamao</span>
           </div>
         </div>
       </header>
@@ -79,8 +79,8 @@ export default function PostAdPage() {
         <div className="mx-auto max-w-3xl">
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl">Post Investment Opportunity</CardTitle>
-              <CardDescription>Fill in the details about your investment opportunity</CardDescription>
+              <CardTitle className="text-2xl">Post Investment / Business Opportunity</CardTitle>
+              <CardDescription>Fill in the details about your investment or business opportunity</CardDescription>
             </CardHeader>
             <CardContent>
               <form className="space-y-6" id="post-ad-form">
@@ -88,7 +88,7 @@ export default function PostAdPage() {
                   <Label htmlFor="title">Title *</Label>
                   <Input
                     id="title"
-                    placeholder="E.g., Tech Startup Seeking Seed Investment"
+                    placeholder="E.g. Tech Startup Seeking Seed Investment"
                     value={formData.title}
                     onChange={(e) => handleChange("title", e.target.value)}
                     required
@@ -141,6 +141,7 @@ export default function PostAdPage() {
                       <SelectContent>
                         <SelectItem value="Silent Partner">Silent Partner</SelectItem>
                         <SelectItem value="Active Partner">Active Partner</SelectItem>
+                        <SelectItem value="Sale of Business">Sale of Business</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -149,7 +150,7 @@ export default function PostAdPage() {
                     <Label htmlFor="city">City/Location *</Label>
                     <Input
                       id="city"
-                      placeholder="E.g., San Francisco, CA"
+                      placeholder="E.g. Karachi"
                       value={formData.city}
                       onChange={(e) => handleChange("city", e.target.value)}
                       required
@@ -162,7 +163,7 @@ export default function PostAdPage() {
                     <Label htmlFor="amount">Investment Amount *</Label>
                     <Input
                       id="amount"
-                      placeholder="E.g., $50,000 - $250,000"
+                      placeholder="E.g., Rs. 50,000 - Rs. 250,000"
                       value={formData.amount}
                       onChange={(e) => handleChange("amount", e.target.value)}
                       required
@@ -173,7 +174,7 @@ export default function PostAdPage() {
                     <Label htmlFor="return">Expected Return *</Label>
                     <Input
                       id="return"
-                      placeholder="E.g., 20% equity, 12% annual return"
+                      placeholder="E.g. 20% equity, 12% annual return"
                       value={formData.return}
                       onChange={(e) => handleChange("return", e.target.value)}
                       required
@@ -185,7 +186,7 @@ export default function PostAdPage() {
                   <Label htmlFor="description">Description *</Label>
                   <Textarea
                     id="description"
-                    placeholder="Describe your investment opportunity in detail..."
+                    placeholder="Describe your investment opportunity in detail"
                     className="min-h-[120px]"
                     value={formData.description}
                     onChange={(e) => handleChange("description", e.target.value)}
@@ -199,7 +200,7 @@ export default function PostAdPage() {
                     <Input
                       id="contactNumber"
                       type="tel"
-                      placeholder="+1 (555) 123-4567"
+                      placeholder="Please enter your contact number"
                       value={formData.contactNumber}
                       onChange={(e) => handleChange("contactNumber", e.target.value)}
                       required

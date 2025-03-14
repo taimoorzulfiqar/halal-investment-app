@@ -10,7 +10,7 @@ export default function Home() {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
           <Link className="flex items-center justify-center" href="/">
-            <span className="font-bold text-xl">InvestConnect</span>
+            <span className="font-bold text-xl">Halal Kamao</span>
           </Link>
           <nav className="hidden md:flex gap-6 items-center">
             <Link className="text-sm font-medium hover:text-primary" href="#features">
@@ -46,7 +46,7 @@ export default function Home() {
                   Connect with Investment Opportunities
                 </h1>
                 <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                  Discover and share investment opportunities in a secure, transparent marketplace. Join our community
+                  Discover and share investment opportunities and businesses for sale in a secure, transparent marketplace. Join our community
                   of investors and entrepreneurs.
                 </p>
               </div>

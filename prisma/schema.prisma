@@ -15,19 +15,33 @@ generator client {
   previewFeatures = ["driverAdapters"]
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model User {
   id            String          @id @default(cuid())
   email         String         @unique
   password      String
   firstName     String
   lastName      String
+  role          Role           @default(USER)
   twoFactorSecret String?
-  twoFactorEnabled Boolean @default(false)
+  twoFactorEnabled Boolean      @default(false)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   profile       Profile?
   opportunities Investment[]
   passwordReset PasswordReset[]
+  reviewRequests ReviewRequest[] @relation("Requester")
+  reviewsHandled ReviewRequest[] @relation("Reviewer")
 }
 
 model Profile {
@@ -58,6 +72,7 @@ model Investment {
   image         String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  reviewRequest ReviewRequest?
 }
 
 model PasswordReset {
@@ -67,4 +82,18 @@ model PasswordReset {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
+}
+
+model ReviewRequest {
+  id          String       @id @default(cuid())
+  investment  Investment   @relation(fields: [investmentId], references: [id])
+  investmentId String      @unique
+  requester   User        @relation("Requester", fields: [requesterId], references: [id])
+  requesterId String
+  reviewer    User?       @relation("Reviewer", fields: [reviewerId], references: [id])
+  reviewerId  String?
+  status      ReviewStatus @default(PENDING)
+  comment     String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }

@@ -1,5 +1,6 @@
 "use client"
 
+import { User } from "lucide-react"; // Import the User icon from Lucide
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { ArrowRight, BarChart3, Building2, Globe, HandshakeIcon, Shield, Users } from "lucide-react"
@@ -35,7 +36,7 @@ export default function Home() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                InvestConnect
+                Halal Kamao
               </motion.span>
             </Link>
             <nav className="hidden md:flex gap-6 items-center">
@@ -87,60 +88,62 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-b from-muted/50 to-background">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px] items-center">
-            <motion.div 
-              className="flex flex-col justify-center space-y-4"
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="space-y-2">
-                <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                  Connect with Investment Opportunities
-                </h1>
-                <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                  Discover and share investment opportunities in a secure, transparent marketplace. Join our community
-                  of investors and entrepreneurs.
-                </p>
-              </div>
-              <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link href="/signup">
-                    <Button size="lg" className="w-full min-[400px]:w-auto">
-                      Get Started
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link href="/dashboard">
-                    <Button size="lg" variant="outline" className="w-full min-[400px]:w-auto">
-                      Explore Opportunities
-                    </Button>
-                  </Link>
-                </motion.div>
-              </div>
-            </motion.div>
-            <motion.div
-              className="relative aspect-video overflow-hidden rounded-xl lg:order-last"
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <FallbackImage
-                src="/images/login-image.jpg"
-                alt="Investment Opportunities"
-                className="object-cover"
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-              />
-            </motion.div>
-          </div>
+      {/* Hero Section */}
+<section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-b from-muted/50 to-background">
+  <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px] items-center">
+      <motion.div 
+        className="flex flex-col justify-center space-y-4"
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <div className="space-y-4"> {/* Adjusted space-y-2 to space-y-4 for more spacing */}
+          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
+            Connect with Halal Investment Opportunities
+          </h1>
+          <p className="max-w-[600px] text-muted-foreground md:text-xl">
+            Discover and share investment opportunities in a secure, transparent and halal marketplace. Join our community
+            of investors and entrepreneurs.
+          </p>
         </div>
-      </section>
+        <div className="flex flex-col gap-2 min-[400px]:flex-row">
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link href="/signup">
+              <Button size="lg" className="w-full min-[400px]:w-auto">
+                Get Started
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </motion.div>
+          {/* Removed the "Explore Opportunities" button */}
+          {/* <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link href="/dashboard">
+              <Button size="lg" variant="outline" className="w-full min-[400px]:w-auto">
+                Explore Opportunities
+              </Button>
+            </Link>
+          </motion.div> */}
+        </div>
+      </motion.div>
+      <motion.div
+        className="relative aspect-video overflow-hidden rounded-xl lg:order-last"
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <FallbackImage
+          src="/images/login-image.jpg"
+          alt="Investment Opportunities"
+          className="object-cover"
+          fill
+          priority
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+        />
+      </motion.div>
+    </div>
+  </div>
+</section>
 
       {/* Features Section */}
       <section id="features" className="w-full py-12 md:py-24 bg-muted/30">
@@ -269,75 +272,77 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="w-full py-12 md:py-24 bg-muted/30">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="flex flex-col items-center justify-center space-y-4 text-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <div className="space-y-2">
-              <motion.div 
-                className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Testimonials
-              </motion.div>
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">What Our Users Say</h2>
-              <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Hear from investors and entrepreneurs who have found success on our platform.
-              </p>
+      {/* Testimonials Section */}
+<section id="testimonials" className="w-full py-12 md:py-24 bg-muted/30">
+  <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <motion.div 
+      className="flex flex-col items-center justify-center space-y-4 text-center"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+    >
+      <div className="space-y-2">
+        <motion.div 
+          className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Testimonials
+        </motion.div>
+        <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">What Our Users Say</h2>
+        <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+          Hear from investors and entrepreneurs who have found success on our platform.
+        </p>
+      </div>
+    </motion.div>
+    <motion.div 
+      className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 md:grid-cols-2 lg:grid-cols-3"
+      variants={staggerContainer}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true }}
+    >
+      {[
+        {
+          quote: "InvestConnect helped me find the perfect investor for my tech startup. The process was smooth and transparent.",
+          name: "Sarah Johnson",
+          title: "CEO, TechInnovate"
+        },
+        {
+          quote: "As an investor, I've found multiple high-quality opportunities through InvestConnect. The detailed profiles help me make informed decisions.",
+          name: "Michael Chen",
+          title: "Angel Investor"
+        },
+        {
+          quote: "The platform's filtering options made it easy to find exactly the type of investment partners I was looking for.",
+          name: "Olivia Martinez",
+          title: "Founder, EcoLiving"
+        }
+      ].map((testimonial, index) => (
+        <motion.div
+          key={index}
+          className="flex flex-col justify-between rounded-lg border p-6 shadow-sm"
+          variants={fadeInUp}
+          whileHover={{ y: -5 }}
+        >
+          <div className="space-y-4">
+            <p className="text-muted-foreground">"{testimonial.quote}"</p>
+          </div>
+          <div className="flex items-center space-x-4 pt-4">
+            {/* Replace the placeholder with an avatar icon */}
+            <div className="rounded-full bg-muted p-2">
+              <User className="h-6 w-6 text-primary" /> {/* Using Lucide's User icon */}
             </div>
-          </motion.div>
-          <motion.div 
-            className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 md:grid-cols-2 lg:grid-cols-3"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-          >
-            {[
-              {
-                quote: "InvestConnect helped me find the perfect investor for my tech startup. The process was smooth and transparent.",
-                name: "Sarah Johnson",
-                title: "CEO, TechInnovate"
-              },
-              {
-                quote: "As an investor, I've found multiple high-quality opportunities through InvestConnect. The detailed profiles help me make informed decisions.",
-                name: "Michael Chen",
-                title: "Angel Investor"
-              },
-              {
-                quote: "The platform's filtering options made it easy to find exactly the type of investment partners I was looking for.",
-                name: "Olivia Martinez",
-                title: "Founder, EcoLiving"
-              }
-            ].map((testimonial, index) => (
-              <motion.div
-                key={index}
-                className="flex flex-col justify-between rounded-lg border p-6 shadow-sm"
-                variants={fadeInUp}
-                whileHover={{ y: -5 }}
-              >
-                <div className="space-y-4">
-                  <p className="text-muted-foreground">"{testimonial.quote}"</p>
-                </div>
-                <div className="flex items-center space-x-4 pt-4">
-                  <div className="rounded-full bg-muted p-1">
-                    <div className="h-8 w-8 rounded-full bg-gray-200" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">{testimonial.name}</p>
-                    <p className="text-xs text-muted-foreground">{testimonial.title}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+            <div>
+              <p className="text-sm font-medium">{testimonial.name}</p>
+              <p className="text-xs text-muted-foreground">{testimonial.title}</p>
+            </div>
+          </div>
+        </motion.div>
+      ))}
+    </motion.div>
+  </div>
+</section>
 
       {/* CTA Section */}
       <section className="w-full py-12 md:py-24 bg-primary text-primary-foreground">
