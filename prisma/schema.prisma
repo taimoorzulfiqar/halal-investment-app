@@ -4,27 +4,30 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "postgresql"
-  url      = env("postgresql://neondb_owner:npg_g6b0YCXKEdVI@ep-green-bread-a54jr2ir-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require")
+  url = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 model User {
-  id            String     @id @default(cuid())
-  email         String     @unique
+  id            String          @id @default(cuid())
+  email         String         @unique
   password      String
   firstName     String
   lastName      String
   twoFactorSecret String?
   twoFactorEnabled Boolean @default(false)
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
   profile       Profile?
   opportunities Investment[]
+  passwordReset PasswordReset[]
 }
 
 model Profile {
@@ -55,4 +58,13 @@ model Investment {
   image         String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+model PasswordReset {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  expires   DateTime
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
 }

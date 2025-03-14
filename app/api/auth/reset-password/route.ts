@@ -1,37 +1,46 @@
-import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/db'
-import { hashPassword, verifyToken } from '@/lib/auth'
+import { NextResponse } from "next/server"
+import { prisma } from "@/lib/prisma"
+import bcrypt from "bcryptjs"
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const { token, password } = await request.json()
+    const { token, password } = await req.json()
 
-    // Verify the reset token
-    const payload = await verifyToken(token)
-    if (!payload || payload.type !== 'password_reset') {
+    // Find valid reset token
+    const resetToken = await prisma.passwordReset.findUnique({
+      where: { token },
+      include: { user: true }
+    })
+
+    if (!resetToken || resetToken.expires < new Date()) {
       return NextResponse.json(
-        { error: 'Invalid or expired reset token' },
+        { error: "Invalid or expired reset token" },
         { status: 400 }
       )
     }
 
-    // Hash the new password
-    const hashedPassword = await hashPassword(password)
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(password, 10)
 
-    // Update the user's password
+    // Update user password
     await prisma.user.update({
-      where: { id: payload.userId },
+      where: { id: resetToken.userId },
       data: { password: hashedPassword }
     })
 
-    return NextResponse.json({
-      message: 'Password updated successfully'
+    // Delete used reset token
+    await prisma.passwordReset.delete({
+      where: { id: resetToken.id }
     })
+
+    return NextResponse.json({ message: "Password reset successful" })
   } catch (error) {
-    console.error('Password reset error:', error)
+    console.error("Reset password error:", error)
     return NextResponse.json(
-      { error: 'Failed to reset password' },
+      { error: "Failed to reset password" },
       { status: 500 }
     )
   }
-} 
+}
+
+export const runtime = "nodejs"

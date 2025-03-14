@@ -1,41 +1,43 @@
-import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/db'
-import { createToken } from '@/lib/auth'
+import { NextResponse } from "next/server"
+import { prisma } from "@/lib/prisma"
+import { sendPasswordResetEmail } from "../../../../lib/email"
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const { email } = await request.json()
+    const { email } = await req.json()
 
-    // Check if user exists
     const user = await prisma.user.findUnique({
-      where: { email }
+      where: { email },
     })
 
     if (!user) {
-      // Return success even if user doesn't exist for security
-      return NextResponse.json({
-        message: 'If an account exists with this email, you will receive a password reset link'
-      })
+      return NextResponse.json(
+        { error: "No user found with this email" },
+        { status: 404 }
+      )
     }
 
-    // Create a password reset token
-    const resetToken = await createToken({
-      userId: user.id,
-      type: 'password_reset'
+    const token = crypto.randomUUID()
+    const expires = new Date(Date.now() + 3600000) // 1 hour from now
+
+    await prisma.passwordReset.create({
+      data: {
+        token,
+        expires,
+        userId: user.id,
+      },
     })
 
-    // In a real application, you would send an email here with the reset link
-    // For demo purposes, we'll just return the token
-    console.log(`Password reset token for ${email}: ${resetToken}`)
+    await sendPasswordResetEmail(email, token)
 
-    return NextResponse.json({
-      message: 'If an account exists with this email, you will receive a password reset link'
-    })
+    return NextResponse.json({ message: "Password reset email sent" })
   } catch (error) {
-    console.error('Password reset error:', error)
+    console.error("Password reset error:", error)
     return NextResponse.json(
-      { error: 'Failed to process password reset request' },
+      { error: "Failed to process password reset" },
       { status: 500 }
     )
   }
-} 
+}
+
+export const runtime = "nodejs"
