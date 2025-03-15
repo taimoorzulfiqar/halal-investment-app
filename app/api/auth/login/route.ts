@@ -6,12 +6,37 @@ import { cookies } from 'next/headers';
 export async function POST(request: Request) {
   try {
     // Parse the request body
-    const { email, password } = await request.json();
+    const body = await request.text();
+    console.log('Request body:', body);
 
-    // Validate the request body
+    let parsedBody;
+    try {
+      // Attempt to parse the request body as JSON
+      parsedBody = JSON.parse(body);
+    } catch (error) {
+      console.error('Error parsing JSON:', error);
+      return NextResponse.json(
+        { error: 'Invalid JSON payload' },
+        { status: 400 }
+      );
+    }
+
+    // Destructure email and password from the parsed body
+    const { email, password } = parsedBody;
+
+    // Validate that email and password are provided
     if (!email || !password) {
       return NextResponse.json(
         { error: 'Email and password are required' },
+        { status: 400 }
+      );
+    }
+
+    // Validate email format (basic check)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: 'Invalid email format' },
         { status: 400 }
       );
     }
@@ -35,6 +60,15 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { error: 'Invalid email or password' },
         { status: 401 }
+      );
+    }
+
+    // Validate the user object before creating a token
+    if (!user || !user.id || !user.email || !user.firstName || !user.lastName) {
+      console.error('Invalid user object:', user);
+      return NextResponse.json(
+        { error: 'Invalid user data' },
+        { status: 500 }
       );
     }
 
